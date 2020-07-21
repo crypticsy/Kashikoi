@@ -37,7 +37,7 @@ async def on_message(message):
     curmes  = str(message.content)
     curmesLower = curmes.lower()
 
-    if not message.author.bot and curmesLower.find(".com") != -1 and curmesLower.find("http") != -1:            # to turn .com message to links
+    if not message.author.bot and curmesLower.find(".com") != -1 and curmesLower.find("http") == -1:            # to turn .com message to links
         allwords = curmes.split()
         links = []
         for i in allwords:
