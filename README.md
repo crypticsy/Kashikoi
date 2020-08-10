@@ -38,3 +38,4 @@ Command | Description
 -------- | -----------
 !airing | Returns Top 20 airing anime for the current duration
 !upcoming | Returns Top 20 upcoming anime for the current duration
+!today | Returns a list of anime that are airing today

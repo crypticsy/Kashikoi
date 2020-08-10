@@ -1,6 +1,9 @@
 import discord
 from jikanpy import Jikan
 from discord.ext import commands
+from datetime import date
+import calendar
+
 
 
 class MyAnimeList(commands.Cog):
@@ -18,6 +21,18 @@ class MyAnimeList(commands.Cog):
             for n,i in enumerate(top_anime['top'][:20]):
                 newList += "%d :  %s\n" %(n+1, i['title'])
             return "```"+newList+"```"
+
+        elif command == "today":
+            curday = calendar.day_name[date.today().weekday()].lower()
+            monday = self.jikan.schedule(day = curday)
+            newList =  "        --- Today's anime updates include ---\n"
+            for n,i in enumerate(monday[curday]):
+                newList += "%d :  %s\n" %(n+1, i['title'])
+            return "```"+newList+"```"
+
+
+
+
     
 
 
@@ -31,6 +46,13 @@ class MyAnimeList(commands.Cog):
     async def airing(self,ctx):
         await ctx.message.delete()
         await ctx.send(self.myAnimeListGenerator("airing"))
+
+
+    @commands.command(brief="Returns all anime airing today", description = "A command that extracts and dispalys the anime scheduled to be aired today from MyAnimeList.")
+    async def today(self,ctx):
+        await ctx.message.delete()
+        await ctx.send(self.myAnimeListGenerator("today"))
+
 
 
 
