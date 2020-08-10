@@ -1,6 +1,6 @@
 <div align=center>
 
-![](./kashikoi.png)
+<img src="kashikoi.png" width="200">
 
   # Kashikoi
   #### A Discord Bot
