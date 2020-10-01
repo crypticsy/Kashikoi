@@ -45,7 +45,7 @@ class MyAnimeList(commands.Cog):
                 return "```"+newList+"```"
 
         except:
-            return "Oops! An error occured in my circuits."
+            return "```Oops! An error occured in my circuits.```"
 
 
 
@@ -65,7 +65,7 @@ class MyAnimeList(commands.Cog):
             return "```"+newlist+"```"
         
         except:
-            return "Oops! An error occured in my circuits."
+            return "```Oops! An error occured in my circuits.```"
 
 
 
@@ -91,7 +91,6 @@ class MyAnimeList(commands.Cog):
     @commands.command(brief="Recommends an anime for a given genre", description = "A command that extracts and displays the details of a random anime for a given genre from MyAnimeList.")
     async def recommend(self,ctx, *args):
         await ctx.send(self.recommendme(''.join(args)))
-
 
 
 

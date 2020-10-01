@@ -29,7 +29,8 @@
 
 Command | Description
 -------- | -----------
-!pastebin *your_code_here* | creates a new paste with 10m timer and returns the link (20 pastes per 24 hr)
+!pastebin <*your_code_here*> | Creates a new paste with 10m timer and returns the link (20 pastes per 24 hr)
+!python <*your_code_here*> | Excutes a simple python script and returns the Stdout
 
 
 ### MyAnimeList Commands
