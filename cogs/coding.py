@@ -31,7 +31,7 @@ class Coding(commands.Cog):
     def execute_python(self, message, name):
         try:
             if message == "sucks" or message == "suck": 
-                return "No you suck @"+name+". 😛"
+                return "No you suck @"+name+" 😛"
             elif message == "fuck you" or message == "fu" or message == "f u": 
                 return "```😒 Whatever!```"
 
