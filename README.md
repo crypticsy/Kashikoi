@@ -1,6 +1,6 @@
 <div align=center>
 
-![](./kashikoi.png)
+<img src="kashikoi.png" width="200">
 
   # Kashikoi
   #### A Discord Bot
@@ -40,4 +40,4 @@ Command | Description
 !airing | Returns Top 20 airing anime for the current duration
 !upcoming | Returns Top 20 upcoming anime for the current duration
 !today | Returns a list of anime whose episodes are scheduled to air today
-!recommend *genre* | Recommends an anime for a given genre [Use !recommend help for futher details]
+!recommend *genre* | Recommends a random anime for a given genre [Use !recommend help for further details]
