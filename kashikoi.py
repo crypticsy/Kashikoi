@@ -23,6 +23,7 @@ for filename in os.listdir(os.path.join(sys.path[0])+"/cogs"):
 async def on_ready():
     print(f'Logged in as: {kashikoi.user.name}')
     print(f'With ID: {kashikoi.user.id}')
+    await kashikoi.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="!help"))
 
 
 @kashikoi.event
