@@ -39,11 +39,7 @@ async def on_message(message):
     curmesLower = curmes.lower()
 
     if not message.author.bot and curmesLower.find(".com") != -1 and curmesLower.find("http") == -1:            # to turn .com message to links
-        allwords = curmes.split()
-        links = []
-        for i in allwords:
-            if i.find(".com") != -1:links.append( "https://"+i.replace(",","") )
-        await message.channel.send('\t'.join(links))
+        await message.channel.send('\t'.join(["https://"+x for x in re.findall(r"\w+\.com", curmes)]))
 
     await kashikoi.process_commands(message)
     
