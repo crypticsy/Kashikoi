@@ -36,12 +36,17 @@ async def on_member_join(member):
 @kashikoi.event
 async def on_message(message): 
     curmes  = str(message.content)
-    curmesLower = curmes.lower()
-
-    if not message.author.bot and curmesLower.find(".com") != -1 and curmesLower.find("http") == -1:            # to turn .com message to links
-        await message.channel.send('\t'.join(["https://"+x for x in re.findall(r"\w+\.com", curmes)]))
+    links = []
+    pattern = r"\w+\.[a-zA-Z]+$"
+    for i in curmes.lower().split():
+        if re.search(r"^http",i) == None and re.search(pattern, i) != None:
+            links += re.findall(pattern, i)
+            
+    if not message.author.bot and len(links) != 0:
+        await message.channel.send('\t'.join(["https://"+x for x in links]))
 
     await kashikoi.process_commands(message)
+    
     
 
 
