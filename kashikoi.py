@@ -1,4 +1,4 @@
-import sys,os
+import sys, os, re, requests
 import discord
 from discord.ext import commands
 
@@ -33,6 +33,13 @@ async def on_member_join(member):
         await channel.send(f'Hey {member.mention}, Welcome to {member.guild.name}!') #Greet a new member
 
 
+def is_website(i):
+    try:
+        val = requests.get("https://"+i)
+        return val.status_code < 400
+    except:
+        return False
+
 @kashikoi.event
 async def on_message(message): 
     curmes  = str(message.content)
@@ -41,9 +48,9 @@ async def on_message(message):
     for i in curmes.lower().split():
         if re.search(r"^http",i) == None and re.search(pattern, i) != None:
             links += re.findall(pattern, i)
-            
+
     if not message.author.bot and len(links) != 0:
-        await message.channel.send('\t'.join(["https://"+x for x in links]))
+        await message.channel.send('\t'.join(["https://"+x for x in links if is_website(x)]))
 
     await kashikoi.process_commands(message)
     
