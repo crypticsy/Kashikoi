@@ -21,7 +21,7 @@
 
 ## Automatic Features
 
-* Greets new members to the server (greeting messages are displayed in )
+* Greets new members to the server (greeting messages are displayed in `general`)
 * Converts messages that contains valid links to hyperlinks
 
 

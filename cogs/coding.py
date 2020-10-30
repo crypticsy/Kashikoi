@@ -68,7 +68,11 @@ class Coding(commands.Cog):
         try:
             data = requests.post('https://www.codingame.com/services/Leaderboards/getGlobalLeaderboard',
                     json = [1,"GENERAL",{"keyword":name,"active":True,"column":"KEYWORD","filter":name},dev_id,True,"global"]
-                ).json()['users'][0]
+                ).json()['users']
+            for i in data:
+                if i['pseudo'] == name: data = i; break
+            else:
+                raise error
         except:
             raise error
 
@@ -80,6 +84,7 @@ class Coding(commands.Cog):
         emb.add_field(name = 'Country', value = data['codingamer']['countryId'],inline=True)
         emb.add_field(name = 'Category', value = data['codingamer']['category'],inline=True)
         emb.add_field(name = 'Profile', value = f"https://www.codingame.com/profile/{data['codingamer']['publicHandle']}",inline=False)
+        if 'avatar' in  data['codingamer']: emb.set_image(url=f"https://static.codingame.com/servlet/fileservlet?id={data['codingamer']['avatar']}&format=navigation_avatar")
 
         return emb
 
@@ -113,7 +118,7 @@ class Coding(commands.Cog):
     @commands.command(brief="Execute python script", description = "Executes a python script and returns the Stdout values.")
     async def python(self,ctx, *, message):
         try:
-            await ctx.send(embed=self.generate_emb("Output",self.execute_python(message, ctx.message.author.name)))
+            await ctx.send(embed=self.generate_emb("",self.execute_python(message, ctx.message.author.name)))
         except:
             await ctx.send(embed=self.generate_emb("", self.invalid_message))
 

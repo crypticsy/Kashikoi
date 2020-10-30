@@ -5,7 +5,9 @@ from discord.ext import commands
 
 
 token = os.environ['BOT_TOKEN']
-kashikoi = commands.Bot(command_prefix = ">")
+
+intents = discord.Intents.all()
+kashikoi = commands.Bot(command_prefix = ">", intents=intents)
 
 
 
@@ -43,11 +45,8 @@ async def on_ready():
 
 @kashikoi.event
 async def on_member_join(member):
-    print("Someone may have joined")
     channel = discord.utils.get(member.guild.channels, name='general')
-    print("Someone may have joined")
     if channel is not None:
-        print("Someone just joined")
         await channel.send(f'Hey {member.mention}, Welcome to {member.guild.name}!') #Greet a new member
 
 
@@ -62,7 +61,8 @@ async def on_message(message):
             links += re.findall(pattern, i)
 
     if not message.author.bot and len(links) != 0:
-        await message.channel.send(embed=generate_emb(' '.join(["https://"+x for x in links if is_website(x)])))
+        all_links = ' '.join(["https://"+x for x in links if is_website(x)])
+        if all_links!="":await message.channel.send(embed=generate_emb(all_links))
 
     await kashikoi.process_commands(message)
     
