@@ -1,13 +1,15 @@
+import calendar
 import discord
+import random
+
 from jikanpy import Jikan
 from discord.ext import commands
 from datetime import date
-import calendar
-import random
 
 
 
 class MyAnimeList(commands.Cog):
+
     jikan = Jikan()
     anime_genre = { "action" : 1, "adventure" : 2, "cars" : 3, "comedy" : 4, 
                     "dementia" : 5, "demons" : 6, "mystery" : 7, "drama" : 8,
@@ -25,47 +27,63 @@ class MyAnimeList(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+    
+ 
+
+    def generate_emb(self, title, description):
+        return discord.Embed(title=title, description=description, colour = 0x36D2D2)
+
 
 
     def myAnimeListGenerator(self, command):
         try:
-            if command in {"upcoming","airing"}:
-                top_anime = self.jikan.top(type='anime', page=1, subtype=command)
-                newList =  "        --- Top 20 %s anime ---\n" %(command)
-                for n,i in enumerate(top_anime['top'][:20]):
-                    newList += "%d :  %s\n" %(n+1, i['title'])
-                return "```"+newList+"```"
+            newList, animelist = "", []
+            check = {"upcoming","airing"}
 
+            if command in check:
+                animelist = self.jikan.top(type='anime', page=1, subtype=command)['top'][:20]
+                
             elif command == "today":
                 curday = calendar.day_name[date.today().weekday()].lower()
-                today = self.jikan.schedule(day = curday)
-                newList =  "        --- Today's anime updates include ---\n"
-                for n,i in enumerate(today[curday]):
-                    newList += "%d :  %s\n" %(n+1, i['title'])
-                return "```"+newList+"```"
+                animelist = self.jikan.schedule(day = curday)[curday]
+
+            title =  f" Top 20 {command} Anime " if command in check else " Todays anime updates include "
+            for n,i in enumerate(animelist):
+                newList += str(n+1).rjust(len(str(len(animelist))),"-") + f" : {i['title']}\n"
+
+            return self.generate_emb(title, newList)        
 
         except:
-            return "```Oops! An error occured in my circuits.```"
-
+            return self.generate_emb("","Oops! An error occured in MyAnimeList circuits.")
 
 
 
     def recommendme(self, message):
         try:
+            title = ""
             if message.lower() in self.anime_genre:
                 data = self.jikan.genre( type = 'anime', genre_id = self.anime_genre[message.lower()] )
                 recommendation = data['anime'][random.randint(0,len(data['anime'])-1)]
-                newlist = "Here's an anime that might interest you ;)\n\nName : " + recommendation['title'] + "\nNo. of Episodes : " + str(recommendation['episodes']) + "\n\nSynopsis : "+ recommendation['synopsis']
+                title = "Here's an anime that might interest you ;)"
+                
+                emb =  discord.Embed(title=title, colour = 0x36D2D2)
+                emb.add_field(name = 'Name', value = recommendation['title'], inline=False)
+                emb.add_field(name = 'No. of Episodes', value = str(recommendation['episodes']), inline=False)
+                synopsis = recommendation['synopsis'] if len(recommendation['synopsis']) < 1024 else recommendation['synopsis'][:1021]+"..."
+                emb.add_field(name = 'Synopsis', value = synopsis, inline=False)
+
+                return emb
             
             else:
-                if message.lower() == "help":newlist = ""
-                else: newlist = "I couldn't understand you.\n\n"
-                newlist += "Here's a list of genre's that I know of: \n" +' - '.join(self.anime_genre.keys())
-
-            return "```"+newlist+"```"
+                if message.lower() == "help": title = ""
+                else: title = "I couldn't understand you."
+                newlist = "Here's a list of genre's that I know of: \n\n" +' - '.join(self.anime_genre.keys())
+                return self.generate_emb(title, newlist)
         
         except:
-            return "```Oops! An error occured in my circuits.```"
+            return self.generate_emb("", "Oops! An error occured in MyAnimeList circuits.")
+
+
 
 
 
@@ -73,24 +91,26 @@ class MyAnimeList(commands.Cog):
     @commands.command(brief="Returns top 20 airing anime", description = "A command that extracts the recent anime list from MyAnimeList and dispalys the top 20 airing animes from the list.")
     async def airing(self,ctx):
         await ctx.message.delete()
-        await ctx.send(self.myAnimeListGenerator("airing"))
+        await ctx.send(embed=self.myAnimeListGenerator("airing"))
+
 
 
     @commands.command(brief="Returns top 20 upcoming anime", description = "A command that extracts the recent anime list from MyAnimeList and dispalys the top 20 upcoming animes from the list.")
     async def upcoming(self,ctx):
         await ctx.message.delete()
-        await ctx.send(self.myAnimeListGenerator("upcoming"))
+        await ctx.send(embed=self.myAnimeListGenerator("upcoming"))
 
 
-    @commands.command(brief="Returns anime whose episodes are scheduled to air today", description = "A command that extracts and dispalys the anime whose episodes are scheduled to be aired today from MyAnimeList.")
+
+    @commands.command(brief="Returns anime scheduled to air episodes today", description = "A command that extracts and dispalys the anime whose episodes are scheduled to be aired today according to MyAnimeList.")
     async def today(self,ctx):
         await ctx.message.delete()
-        await ctx.send(self.myAnimeListGenerator("today"))
+        await ctx.send(embed=self.myAnimeListGenerator("today"))
 
 
     @commands.command(brief="Recommends an anime for a given genre", description = "A command that extracts and displays the details of a random anime for a given genre from MyAnimeList.")
     async def recommend(self,ctx, *args):
-        await ctx.send(self.recommendme(''.join(args)))
+        await ctx.send(embed=self.recommendme(''.join(args)))
 
 
 
