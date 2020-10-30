@@ -29,9 +29,9 @@
 
 Command | Description
 -------- | -----------
-\>codingame */---username---/* | Provides a detailed description about the username from CodinGame.com
-\>pastebin */---your_code_here---/* | Creates a new paste with 10m timer and returns the link (20 pastes per 24 hr)
-\>python */---your_code_here---/* | Excutes a simple python script and returns the Stdout
+\>codingame `username` | Provides a detailed description about the username from CodinGame.com
+\>pastebin `your_code_here` | Creates a new paste with 10m timer and returns the link (20 pastes per 24 hr)
+\>python `your_code_here` | Excutes a simple python script and returns the Stdout
 
 
 ### MyAnimeList Commands
@@ -39,6 +39,6 @@ Command | Description
 Command | Description
 -------- | -----------
 \>airing | Returns Top 20 airing anime for the current duration
-\>recommend */---genre---/* | Recommends a random anime for a given genre [Use !recommend help for further details]
+\>recommend `genre` | Recommends a random anime for a given genre [Use !recommend help for further details]
 \>today | Returns a list of anime whose episodes are scheduled to air today
 \>upcoming | Returns Top 20 upcoming anime for the current duration
