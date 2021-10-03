@@ -122,7 +122,26 @@ class Coding(commands.Cog):
         except:
             await ctx.send(embed=self.generate_emb("", self.invalid_message))
 
-
+    
+    @commands.command(brief="Performs youtube search", description = "Performs youtube serch and returns the best matched video.")
+    async def youtube(self,ctx, *, message):
+        try:
+            query = message
+            url = 'https://www.youtube.com/results?q=' + query
+            count = 0
+            data = str(requests.get(url).content)
+            lst = data.split('"')
+            for i in lst:
+                count += 1
+                if i == 'WEB_PAGE_TYPE_WATCH':
+                    break
+            if lst[count - 5] == "/results":
+                await ctx.send(f"Hey {ctx.author.mention}, Can't find the video")
+                break
+            mess = f"Hey {ctx.author.mention}, your youtube video is here - \nhttps://www.youtube.com" + lst[count - 5]
+            await ctx.send(mess)
+        except:
+            await ctx.send(embed=self.generate_emb("", self.invalid_message))
 
 
 
