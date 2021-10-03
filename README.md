@@ -32,6 +32,7 @@ Command | Description
 \>codingame `username` | Provides a detailed description about the username from CodinGame.com
 \>pastebin `your_code_here` | Creates a new paste with 10m timer and returns the link (20 pastes per 24 hr)
 \>python `your_code_here` | Excutes a simple python script and returns the Stdout
+\>youtube `your_query-here` | Performs a youtube search and returns best matched video link
 
 
 ### MyAnimeList Commands
